@@ -12,7 +12,8 @@ function year (username, password, session, year, semester, update, callback) {
 				callback(err, result);
 				return;
 			}
-
+			var updateTime = result["updateTime"];
+			result = result["score"];
 			var scores = returnScore(result, year, semester);
 			if(!scores)
 			{
@@ -20,7 +21,9 @@ function year (username, password, session, year, semester, update, callback) {
 				return;
 			}
 
-			callback(false, scores);
+			callback(false, {updateTime : updateTime,
+								score : scores
+							});
 		});
 	}
 
@@ -54,13 +57,17 @@ function year (username, password, session, year, semester, update, callback) {
 				callback("Error PSW");
 				return;
 			}
-			var scores = returnScore(JSON.parse(result[0].json), year, semester);
+			var s = JSON.parse(result[0].json);
+			var updateTime = s["updateTime"]; 
+			var scores = returnScore(s["score"], year, semester);
 			if(!scores)
 			{
 				callback("No Recode");
 				return;
 			}
-			callback(false, scores);
+			callback(false, {updateTime : updateTime,
+								score : scores
+							});
 		});
 	}
 

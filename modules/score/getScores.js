@@ -192,8 +192,8 @@ function viewstateScores (viewstate){
 			Title : temList[3],
 			Type : temList[4],
 			Credit : temList[5],
-			GPA : temList[6],
-			UsualScore : temList[7]
+			UsualScore : temList[6],
+			RealScore : temList[7]
 		};
 		var sc, k;
 		for(k = temList.length - 1; k > 0; k--)
@@ -211,14 +211,14 @@ function viewstateScores (viewstate){
 		}
 		info.TestScore = TestScoreList;
 		if(!info.EndScore)
-			info.EndScore = info.UsualScore;
+			info.EndScore = info.RealScore;
 		if(info.EndScore === "优秀" || info.EndScore === "良好" || info.EndScore === "中等" || info.EndScore === "及格")
 		{
 			for(var n = 0; n < temList.length; n++)
 			{
 				if(temList[n] === info.EndScore)
 				{
-					if(!isNaN(Number(temList[n + 1])) && parseInt(temList) === temList-0)
+					if(!isNaN(Number(temList[n + 1])))
 					{
 						TestScoreList.push(temList[n + 1]);
 						break;
@@ -228,9 +228,9 @@ function viewstateScores (viewstate){
 		}
 		info.Exam = "正考通过";
 		var EndSc = 60;
-		if(info.GPA == 0)
+		if(info.Credit == 0)
 		{
-			if(!isNaN(Number(info.EndScore)) && parseInt(info.EndScore) === info.EndScore - 0)
+			if(!isNaN(Number(info.EndScore)))
 			{
 				EndSc = info.EndScore - 0;
 			}
@@ -246,7 +246,7 @@ function viewstateScores (viewstate){
 				for(var n = temList.length - 1; n > k; n--)
 				{
 					var rs = 60;
-					if(!isNaN(Number(temList[n])) && parseInt(temList[n]) === temList[n] - 0)
+					if(!isNaN(Number(temList[n])))
 					{
 						info.ReScore = temList[n];
 						rs = info.ReScore - 0;
@@ -272,7 +272,7 @@ function viewstateScores (viewstate){
 		if(temList[temList.length - 1] === "重修")
 		{
 			var redos = 60;
-			if(!isNaN(Number(info.EndScore)) && parseInt(info.EndScore) === info.EndScore - 0)
+			if(!isNaN(Number(info.EndScore)))
 			{
 				redos = info.EndScore - 0;
 			}
@@ -325,7 +325,10 @@ function viewstateScores (viewstate){
 	}
 	yearScore1.Terms = Terms1;
 	YearData.push(yearScore1);
-	return YearData;
+
+	return {updateTime : (new Date()).toString(),
+			score : YearData
+			};
 }
 
 module.exports = getScores;

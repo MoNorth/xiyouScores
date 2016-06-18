@@ -6,6 +6,8 @@ var iconv = require('iconv-lite');
 var cheerio = require("cheerio");
 var getInfo = require("./info");
 var getScores = require("../score/getScores");
+var scoreQ = require("../queue/score");
+var infoQ = require("../queue/info");
 
 function login (username, password, callback) {
 	if (username == '' || password == '') {
@@ -96,12 +98,16 @@ function getName(username, password, session, callback){
 		var $ = cheerio.load(body);
 		var name = $("#xhxm").text().replace("同学","");
 		mongo.add({username: username, password: password, name: name},function(){
+            scoreQ.addUser(username, {});
+            infoQ.addUser(username, {});
             callback(false, {session: session.substr(0,session.indexOf(";"))});
             getInfo(username, password, session, function(err){
+                        infoQ.removeUser(username);
                         if(err)
                             console.log(err);
                     });
             getScores(username, session, function(err){
+                scoreQ.removeUser(username);
                 if(err)
                     console.log(err);
             })
