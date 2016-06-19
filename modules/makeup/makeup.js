@@ -19,7 +19,7 @@ function makeup (username, session, callback) {
 		}
 
 		var url = "http://222.24.62.120/xsbkkscx.aspx?gnmkdm=N121618" +
-					"&xh=" + username + "&xm=" + result[0].name;
+					"&xh=" + username + "&xm=" + encodeURI(result[0].name);
 		request(
 		{
 			url: url,

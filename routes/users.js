@@ -3,6 +3,7 @@ var router = express.Router();
 
 var login = require("../modules/users/login");
 var info = require("../modules/users/info");
+var getImg = require("../modules/users/img");
 var json = require("../modules/json");
 var infoQ = require("../modules/queue/info");
 
@@ -33,6 +34,14 @@ router.use('/info', function(req, res){
 	}
 
 	info(username, password, session, function(err, result){
+		json(res, err, result);
+	});
+});
+
+router.use('/img', function(req, res){
+	var username = req.param("username");
+	var session = req.param("session");
+	getImg(username, session, res, function(err, result){
 		json(res, err, result);
 	});
 });
