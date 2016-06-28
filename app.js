@@ -9,7 +9,7 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var score = require('./routes/score');
 var makeup = require('./routes/makeup');
-
+var schedule = require("./modules/setTime/schedule");
 
 var app = express();
 
@@ -37,6 +37,8 @@ app.use(function(req, res, next) {
   next(err);
 });
 
+
+
 // error handlers
 
 // development error handler
@@ -61,5 +63,6 @@ app.use(function(err, req, res, next) {
   });
 });
 
+schedule();
 
 module.exports = app;

@@ -66,6 +66,12 @@ var update = function(username, newData){
 	);
 }
 
+var getAllUser = function(callback){
+	mongooseModel.find({},{username : 1, password : 1, _id : 0},callback);
+}
+
+
+exports.getAllUser = getAllUser;
 exports.add = add;
 exports.findName = findName;
 exports.update = update;
