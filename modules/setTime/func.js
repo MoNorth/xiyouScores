@@ -21,7 +21,7 @@ function func(){
 			login(result[index].username,result[index].password,function(err,results){
 				if(err)
 				{
-					console.log(result[index].username + "UPDATE ERROR");
+					console.log(result[index].username + "UPDATE GETNAME ERROR");
 					index ++;
 					getScores();
 				}
@@ -30,7 +30,7 @@ function func(){
 					scores(result[index].username,results.session,function(err){
 						if(err)
 						{
-							console.log(result[index].username + "UPDATE ERROR");
+							console.log(result[index].username + "UPDATE REQUEST ERROR");
 						}
 						else
 						{

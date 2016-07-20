@@ -50,6 +50,10 @@ function login (username, password, callback) {
             }
     		if(result.length === 0)
     			getName(username, password, session[0], callback);
+            else if(result[0].name == "")
+            {
+                getName(username, password, session[0], callback, true);
+            }
             else
             {
                 callback(false, {session: session[0].substr(0,session[0].indexOf(";"))});
@@ -77,7 +81,7 @@ function login (username, password, callback) {
     );
 }
 
-function getName(username, password, session, callback){
+function getName(username, password, session, callback, isFixName){
 	request(
 	{
 		url: "http://222.24.62.120/xs_main.aspx?xh=" + username,
@@ -97,7 +101,8 @@ function getName(username, password, session, callback){
 		body = iconv.decode(body, "GB2312").toString();
 		var $ = cheerio.load(body);
 		var name = $("#xhxm").text().replace("同学","");
-		mongo.add({username: username, password: password, name: name},function(){
+
+        function addOrFixCallback(){
             scoreQ.addUser(username, {});
             infoQ.addUser(username, {});
             callback(false, {session: session.substr(0,session.indexOf(";"))});
@@ -112,7 +117,11 @@ function getName(username, password, session, callback){
                     console.log(err);
             })
             console.log("newLogin " + username);
-        });	
+        }
+        if(isFixName)
+            mongo.update(username,{name:name},addOrFixCallback);
+        else
+            mongo.add({username: username, password: password, name: name},addOrFixCallback);	
 	}
 	);
 

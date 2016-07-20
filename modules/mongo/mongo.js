@@ -54,7 +54,7 @@ var findName = function(username, callback){
 	});
 }
 
-var update = function(username, newData){
+var update = function(username, newData, callback){
 	mongooseModel.update(
 		{username: username},
 		{$set : newData},
@@ -62,6 +62,8 @@ var update = function(username, newData){
 		function(err){
 			if(err)
 				console.log(err);
+			if(callback)
+				callback();
 		}
 	);
 }
