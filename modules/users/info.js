@@ -17,7 +17,7 @@ function getInfo (username, password, session, callback) {
 			callback("NO Login");
 			return;
 		}
-		if(result[0].info)
+		if(result[0].info && JSON.parse(result[0].info)['class'] != '')
 		{
 			if(result[0].password === password)
 				callback(false, JSON.parse(result[0].info));
